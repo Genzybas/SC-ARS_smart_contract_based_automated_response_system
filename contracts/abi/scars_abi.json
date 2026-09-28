@@ -1,0 +1,173 @@
+[
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "deviceID",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "ThreatMitigated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "deviceID",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "threatType",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "severity",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "anomalyScore",
+        "type": "uint256"
+      }
+    ],
+    "name": "ThreatReported",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "admin",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_deviceID",
+        "type": "string"
+      }
+    ],
+    "name": "getThreats",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "deviceID",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "threatType",
+            "type": "string"
+          },
+          {
+            "internalType": "uint8",
+            "name": "severity",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "anomalyScore",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "mitigated",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct SCARS.ThreatReport[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_deviceID",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_index",
+        "type": "uint256"
+      }
+    ],
+    "name": "mitigateThreat",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_deviceID",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_threatType",
+        "type": "string"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_severity",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_anomalyScore",
+        "type": "uint256"
+      }
+    ],
+    "name": "reportThreat",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

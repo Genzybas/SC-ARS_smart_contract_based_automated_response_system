@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+paho-mqtt
+scikit-learn
+xgboost
+joblib
+web3
+python-dotenv
+tensorflow
+
