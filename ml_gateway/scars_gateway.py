@@ -1,24 +1,32 @@
 import json
+import os
+from pathlib import Path
+
 import joblib
 import numpy as np
 import pandas as pd
-from web3 import Web3
-import os
 from dotenv import load_dotenv
+from web3 import Web3
 
-load_dotenv('config.env')
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(BASE_DIR / "config.env")
 
 # Load environment variables
 PRIVATE_KEY = os.getenv("PRIVATE_KEY")
 RPC_URL = os.getenv("RPC_URL")
 CONTRACT_ADDRESS = os.getenv("SCARS_CONTRACT_ADDRESS")
 
+if not PRIVATE_KEY or not RPC_URL or not CONTRACT_ADDRESS:
+    raise RuntimeError(
+        "Missing blockchain configuration. Set PRIVATE_KEY, RPC_URL, and SCARS_CONTRACT_ADDRESS in ml_gateway/config.env."
+    )
+
 # Connect to blockchain
 web3 = Web3(Web3.HTTPProvider(RPC_URL))
 acct = web3.eth.account.from_key(PRIVATE_KEY)
 
 # Load contract
-with open("scars_abi.json", "r") as file:
+with open(BASE_DIR / "scars_abi.json", "r") as file:
     abi = json.load(file)
 
 contract = web3.eth.contract(address=CONTRACT_ADDRESS, abi=abi)

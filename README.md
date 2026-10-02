@@ -17,6 +17,10 @@ The project is aligned with the broader concept of using on-chain incident repor
 - Trigger mitigations and log response actions.
 - Expose monitoring and status updates through a local dashboard and real-time stream.
 
+## Dashboard preview
+
+![SC-ARS security operations dashboard](docs/assets/sc-ars-dashboard.png)
+
 ## System architecture
 
 ### 1. Smart contract layer
@@ -152,6 +156,17 @@ The dashboard is typically served at:
 - expand dashboard analytics and alert history,
 - add secure deployment automation for testnets and mainnets,
 - improve model packaging and versioning strategy.
+
+## Project execution plan
+
+The repository is structured around the four layers described in the research paper:
+
+1. threat detection gateway,
+2. smart contract response layer,
+3. gateway-to-contract orchestration,
+4. live monitoring dashboard.
+
+The implementation plan is documented in [docs/project-plan.md](docs/project-plan.md).
 
 ## License
 
