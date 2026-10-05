@@ -7,6 +7,7 @@ import joblib
 import numpy as np
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, WebSocket
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from web3 import Web3
@@ -17,29 +18,60 @@ BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / "config.env")
 
 app = FastAPI(title="SC-ARS Threat Detection API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 manager = ConnectionManager()
 
-# Load models for different datasets
-pipelines = {
+MODEL_SPECS = {
     "nsl": {
-        "model": joblib.load(BASE_DIR / "models" / "scars_nsl_model.pkl"),
-        "scaler": joblib.load(BASE_DIR / "models" / "scars_nsl_scaler.pkl"),
-        "selector": joblib.load(BASE_DIR / "models" / "scars_nsl_selector.pkl"),
-        "pca": joblib.load(BASE_DIR / "models" / "scars_nsl_pca.pkl"),
+        "model": BASE_DIR / "models" / "scars_nsl_model.pkl",
+        "scaler": BASE_DIR / "models" / "scars_nsl_scaler.pkl",
+        "selector": BASE_DIR / "models" / "scars_nsl_selector.pkl",
+        "pca": BASE_DIR / "models" / "scars_nsl_pca.pkl",
     },
     "ton": {
-        "model": joblib.load(BASE_DIR / "models" / "toniot_model.pkl"),
-        "scaler": joblib.load(BASE_DIR / "models" / "toniot_scaler.pkl"),
-        "selector": joblib.load(BASE_DIR / "models" / "toniot_selector.pkl"),
-        "pca": joblib.load(BASE_DIR / "models" / "toniot_pca.pkl"),
+        "model": BASE_DIR / "models" / "toniot_model.pkl",
+        "scaler": BASE_DIR / "models" / "toniot_scaler.pkl",
+        "selector": BASE_DIR / "models" / "toniot_selector.pkl",
+        "pca": BASE_DIR / "models" / "toniot_pca.pkl",
     },
     "cicids": {
-        "model": joblib.load(BASE_DIR / "models" / "scars_cicids_model_sample.pkl"),
-        "scaler": joblib.load(BASE_DIR / "models" / "scars_cicids_scaler_sample.pkl"),
-        "selector": joblib.load(BASE_DIR / "models" / "scars_cicids_selector_sample.pkl"),
-        "pca": joblib.load(BASE_DIR / "models" / "scars_cicids_pca_sample.pkl"),
+        "model": BASE_DIR / "models" / "scars_cicids_model_sample.pkl",
+        "scaler": BASE_DIR / "models" / "scars_cicids_scaler_sample.pkl",
+        "selector": BASE_DIR / "models" / "scars_cicids_selector_sample.pkl",
+        "pca": BASE_DIR / "models" / "scars_cicids_pca_sample.pkl",
     },
 }
+
+pipelines = {name: None for name in MODEL_SPECS}
+
+
+def _load_pipeline_for_source(source: str) -> dict:
+    source = source.lower()
+    if source not in MODEL_SPECS:
+        raise KeyError(f"Unsupported source dataset: {source}")
+
+    files = MODEL_SPECS[source]
+    pipeline = {
+        "model": joblib.load(files["model"]),
+        "scaler": joblib.load(files["scaler"]),
+        "selector": joblib.load(files["selector"]),
+        "pca": joblib.load(files["pca"]),
+    }
+    pipelines[source] = pipeline
+    return pipeline
+
+
+def _get_pipeline(source: str) -> dict:
+    source = source.lower()
+    if pipelines.get(source) is None:
+        return _load_pipeline_for_source(source)
+    return pipelines[source]
 
 
 class PredictRequest(BaseModel):
@@ -80,10 +112,12 @@ def _prepare_model_input(pipeline: dict, X: np.ndarray) -> np.ndarray:
 
 @app.get("/health")
 def health_check():
+    loaded = sorted(name for name, pipeline in pipelines.items() if pipeline is not None)
     return {
         "status": "ok",
         "service": "sc-ars-threat-gateway",
-        "models_loaded": sorted(pipelines.keys()),
+        "available_models": sorted(MODEL_SPECS.keys()),
+        "models_loaded": loaded,
         "blockchain_configured": bool(os.getenv("PRIVATE_KEY") and os.getenv("RPC_URL") and os.getenv("SCARS_CONTRACT_ADDRESS")),
     }
 
@@ -153,12 +187,12 @@ def report_threat_to_blockchain(device_id: str, threat_type: str, anomaly_score:
 @app.post("/predict", response_model=PredictResponse)
 async def predict_threat(req: PredictRequest):
     source = req.source.lower()
-    if source not in pipelines:
+    if source not in MODEL_SPECS:
         raise HTTPException(status_code=400, detail="Unsupported source dataset")
 
     try:
         X = np.array(req.data, dtype=float).reshape(1, -1)
-        pipeline = pipelines[source]
+        pipeline = _get_pipeline(source)
         X_final = _prepare_model_input(pipeline, X)
 
         prediction = pipeline["model"].predict(X_final)[0]

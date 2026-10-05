@@ -24,12 +24,12 @@ def _load_case(source: str):
 
 class PredictionInputTests(unittest.TestCase):
     def test_saved_models_accept_their_dataset_samples(self):
-        from ml_gateway.main import _prepare_model_input, pipelines
+        from ml_gateway.main import _get_pipeline, _prepare_model_input
 
         for source in ("nsl", "ton", "cicids"):
             with self.subTest(source=source):
                 X = _load_case(source)
-                pipeline = pipelines[source]
+                pipeline = _get_pipeline(source)
                 model_input = _prepare_model_input(pipeline, X)
                 self.assertEqual(model_input.shape[1], pipeline["model"].n_features_in_)
                 self.assertEqual(pipeline["model"].predict(model_input).shape, (1,))

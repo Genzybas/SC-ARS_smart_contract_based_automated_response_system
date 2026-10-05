@@ -9,6 +9,14 @@ SC-ARS is a research prototype for automated, blockchain-backed threat response 
 
 The project is aligned with the broader concept of using on-chain incident reporting and automated mitigation workflows to support trust, traceability, and response coordination in distributed environments.
 
+## Paper / publication
+
+This repository accompanies the SC-ARS research paper and final manuscript. The current manuscript PDF is included in the repository here:
+
+- [final_edit_Smart_Contract_Based_Automated_Response_System_Franklin_Open_Kextraco.pdf](final_edit_Smart_Contract_Based_Automated_Response_System_Franklin_Open_Kextraco.pdf)
+
+If the paper is later published on a journal, preprint, or institutional repository, replace this link with the permanent public URL.
+
 ## Project goals
 
 - Detect suspicious activity from IoT or network telemetry using trained ML pipelines.
