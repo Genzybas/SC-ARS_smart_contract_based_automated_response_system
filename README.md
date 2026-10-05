@@ -31,6 +31,7 @@ This repository accompanies the published SC-ARS research paper. The permanent p
 ## System architecture
 
 ### 1. Smart contract layer
+
 The Solidity contract in [contracts/SCARS.sol](contracts/SCARS.sol) defines the threat-report lifecycle:
 
 - `reportThreat(...)` records a device ID, threat type, severity, and anomaly score.
@@ -40,6 +41,7 @@ The Solidity contract in [contracts/SCARS.sol](contracts/SCARS.sol) defines the 
 This provides an immutable ledger of security events that can be reviewed or acted upon by an authorized admin.
 
 ### 2. ML detection gateway
+
 The Python service in [ml_gateway/main.py](ml_gateway/main.py) exposes a FastAPI API with:
 
 - `POST /predict` for inference on incoming telemetry features
@@ -49,7 +51,6 @@ The Python service in [ml_gateway/main.py](ml_gateway/main.py) exposes a FastAPI
 The gateway loads pre-trained ML pipelines for different datasets:
 
 - NSL-KDD
-- TON_IoT
 - CICIDS sample pipeline
 
 Each pipeline performs:
@@ -61,9 +62,11 @@ Each pipeline performs:
 - optional mitigation trigger when a threat is identified.
 
 ### 3. MQTT and live monitoring
+
 The project includes MQTT utilities and WebSocket management for streaming detection summaries to local interfaces. This supports live monitoring of model output and mitigation events.
 
 ### 4. Frontend dashboard
+
 The Next.js app under [sc-ars-dashboard](sc-ars-dashboard) provides a browser-based UI for monitoring system alerts and the live threat stream.
 
 ## Repository layout
@@ -140,7 +143,7 @@ npm run dev
 
 The dashboard is typically served at:
 
-- http://localhost:3000
+- [http://localhost:3000](http://localhost:3000)
 
 ## Example flow
 
