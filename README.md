@@ -11,11 +11,10 @@ The project is aligned with the broader concept of using on-chain incident repor
 
 ## Paper / publication
 
-This repository accompanies the SC-ARS research paper and final manuscript. The current manuscript PDF is included in the repository here:
+This repository accompanies the published SC-ARS research paper. The permanent publication links are:
 
-- [final_edit_Smart_Contract_Based_Automated_Response_System_Franklin_Open_Kextraco.pdf](final_edit_Smart_Contract_Based_Automated_Response_System_Franklin_Open_Kextraco.pdf)
-
-If the paper is later published on a journal, preprint, or institutional repository, replace this link with the permanent public URL.
+- [E3S Web of Conferences article](https://www.e3s-conferences.org/articles/e3sconf/abs/2026/53/e3sconf_ai-scities2026_03001/e3sconf_ai-scities2026_03001.html)
+- [ResearchGate publication](https://www.researchgate.net/publication/412749519_Smart_Contract-Based_Automated_Response_System_for_IoT_Attacks_in_Web3_Ecosystems?__cf_chl_tk%3DiwLbidcBQeNJKhrPWccC0sh8j_xU3lf2boVTLBmd0Uw-1790603464-1.0.1.1-k1UBN.47V8mndgP1tJ..iZopAP.04SXR36Hy.T7X6o0)
 
 ## Project goals
 
