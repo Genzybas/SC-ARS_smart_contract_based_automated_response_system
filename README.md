@@ -28,6 +28,34 @@ This repository accompanies the published SC-ARS research paper. The permanent p
 
 ![SC-ARS security operations dashboard](docs/assets/sc-ars-dashboard.png)
 
+### Threat report evidence
+
+The operational dashboard captures live telemetry and event classification from the gateway. A representative sample from the running system is shown below:
+
+```json
+{
+  "prediction": "18",
+  "score": 0.23,
+  "severity": 0,
+  "threat_detected": false,
+  "blockchain_tx": null,
+  "source": "nsl",
+  "source_ip": "10.0.0.5"
+}
+```
+
+The same workflow is also validated on-chain through the SCARS contract. The deployed local-chain example recorded and mitigated a threat entry for `device-1234`:
+
+```bash
+✅ Threat reported.
+📄 Threats for device-1234: Result(1) [
+  Result(6) [ 'device-1234', 1791207008n, 'DDoS', 2n, 85n, false ]
+]
+✅ Threat mitigated.
+```
+
+This demonstrates the end-to-end flow from telemetry ingestion, to ML-based classification, to a recorded and mitigated blockchain event.
+
 ## System architecture
 
 ### 1. Smart contract layer
