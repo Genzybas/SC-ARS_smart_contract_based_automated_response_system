@@ -28,6 +28,24 @@ This repository accompanies the published SC-ARS research paper. The permanent p
 
 ![SC-ARS security operations dashboard](docs/assets/sc-ars-dashboard.png)
 
+## Project documentation
+
+The project is organized around a four-layer architecture that links detection, response, trust, and monitoring:
+
+- [docs/project-plan.md](docs/project-plan.md) — implementation roadmap aligned to the published research paper
+- [docs/demo-script.md](docs/demo-script.md) — short demonstration flow for live evaluation and presentation
+
+## Demo script
+
+The following short walkthrough is intended for live presentations and technical validation:
+
+1. Submit telemetry to the gateway through the prediction endpoint.
+2. Confirm the ML pipeline classifies the sample and returns a confidence score.
+3. Trigger the contract interaction to report and mitigate the threat on the local blockchain.
+4. Observe the event in the dashboard feed and confirm the system displays the live telemetry record.
+
+This sequence demonstrates the complete operational loop from detection to response to monitoring.
+
 ### Threat report evidence
 
 The operational dashboard captures live telemetry and event classification from the gateway. A representative sample from the running system is shown below:
